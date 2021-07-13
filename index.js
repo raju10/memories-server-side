@@ -34,18 +34,18 @@ client.connect((err) => {
   });
   ////
 
-  app.put("/addPosts", (req, res) => {
-    const posts = req.body.clientInfo;
-    // const comment = {
-    //   text: req.body.data.comment,
-    //   id: req.body._id,
-    // };
-    console.log(posts);
-    postCollection.find(posts).toArray((err, items) => {
-      res.send(items);
-      console.log(items);
-    });
-  });
+  // app.put("/addPosts", (req, res) => {
+  //   const posts = req.body.clientInfo;
+  //   // const comment = {
+  //   //   text: req.body.data.comment,
+  //   //   id: req.body._id,
+  //   // };
+  //   console.log(posts);
+  //   postCollection.find(posts).toArray((err, items) => {
+  //     res.send(items);
+  //     console.log(items);
+  //   });
+  // });
   ////////////Comment's.......
   // app.post("/userInfo", (req, res) => {
   //   const posts = req.body;
@@ -74,6 +74,50 @@ client.connect((err) => {
     console.log(req.params.id);
   });
   ////
+  //=====update===//
+  app.get("/postes/:id", (req, res) => {
+    postCollection
+      .find({ _id: ObjectID(req.params.id) })
+      .toArray((err, document) => {
+        res.send(document[0]);
+        console.log(document);
+      });
+    //  console.log(req.params.id);
+  });
+  ////
+  app.patch("/update/:id", (req, res) => {
+    postCollection
+      .updateOne(
+        { _id: ObjectID(req.params.id) },
+        {
+          $set: {
+            creator: req.body.creator,
+            title: req.body.title,
+            message: req.body.message,
+            tags: req.body.tags,
+          },
+        }
+      )
+      .then((result) => {
+        console.log(result);
+      });
+  });
+  ////
+  app.patch("/updatess/:id", (req, res) => {
+    postCollection
+      .updateOne(
+        { id: ObjectID(req.params.id) },
+        {
+          $set: {
+            comments: req.body.comments,
+          },
+        }
+      )
+      .then((result) => {
+        console.log(result);
+      });
+  });
+  ///
 });
 
 app.get("/", (req, res) => {
