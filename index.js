@@ -17,10 +17,10 @@ const client = new MongoClient(uri, {
 });
 client.connect((err) => {
   const postCollection = client.db("memories").collection("post");
-  const userCollection = client.db("memories").collection("userInfo");
+
+  //==== creating post====///
   app.post("/addPost", (req, res) => {
     const posts = req.body;
-    // console.log(posts);
     postCollection.insertOne(posts).then((result) => {
       res.send(result.insertedCount > 0);
       //  console.log(result);
@@ -32,36 +32,8 @@ client.connect((err) => {
       res.send(items);
     });
   });
-  ////
+  // creating post close//
 
-  // app.put("/addPosts", (req, res) => {
-  //   const posts = req.body.clientInfo;
-  //   // const comment = {
-  //   //   text: req.body.data.comment,
-  //   //   id: req.body._id,
-  //   // };
-  //   console.log(posts);
-  //   postCollection.find(posts).toArray((err, items) => {
-  //     res.send(items);
-  //     console.log(items);
-  //   });
-  // });
-  ////////////Comment's.......
-  // app.post("/userInfo", (req, res) => {
-  //   const posts = req.body;
-  //   console.log(posts);
-  //   userCollection.insertOne(posts).then((result) => {
-  //     res.send(result.insertedCount > 0);
-  //     console.log(result);
-  //   });
-  // });
-  // ////
-  // app.get("/allUserInfo", (req, res) => {
-  //   userCollection.find().toArray((err, items) => {
-  //     res.send(items);
-  //   });
-  // });
-  ////
   //=====delete===//
   app.delete("/delete/:id", (req, res) => {
     console.log(req.params.id);
@@ -84,7 +56,7 @@ client.connect((err) => {
       });
     //  console.log(req.params.id);
   });
-  ////
+  //====//
   app.patch("/update/:id", (req, res) => {
     postCollection
       .updateOne(
@@ -102,8 +74,8 @@ client.connect((err) => {
         console.log(result);
       });
   });
-  ////
-  app.patch("/updatess/:id", (req, res) => {
+  //====comments====//
+  app.patch("/comments/:id", (req, res) => {
     postCollection
       .updateOne(
         { id: ObjectID(req.params.id) },
